@@ -1,22 +1,21 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Mar 27 16:50:57 2019
+Created on Thu Mar 28 14:10:51 2019
 
-@author: nwenn
+@author: gwend,Nwen
 """
-
 import random, pygame, os
 #from pygame.locals import *
 
 pygame.init()
 pygame.display.set_caption("VoZ.GG alpha early access")
 
-fenetre = pygame.display.set_mode((1080,720))
+fenetre = pygame.display.set_mode((1540,794))
 clock = pygame.time.Clock()
 
 running = True
 bg = pygame.image.load("bg.jpg").convert()
-bg = pygame.transform.scale(bg,(1080,720))
+bg = pygame.transform.scale(bg,(1540,794))
 fenetre.blit(bg,(0,0))
 
 img = pygame.image.load("10E.jpg").convert()
@@ -95,4 +94,3 @@ while running :
     pygame.draw.rect(fenetre, (255, 200, 0), player.rect)
     
     pygame.display.flip()
-    
