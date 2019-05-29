@@ -27,7 +27,7 @@ def init():
 	
 	#initialisation de la partie
 
-	timeStep=0.2
+	timeStep=0.01
 	
 	# creation des elements du jeu
 	
@@ -48,14 +48,19 @@ def interact():
         c = sys.stdin.read(1)
         if c == '\x1b':         # x1b is ESC
             quitGame()
-        elif c=='q' :
-            Tank.moveLeft(tank)
+        #if Background.isValid(background,tank["x"],tank["y"]) and Background.isValid(background,tank["x"]-3,tank["y"]):
+        if c=='q' :
+            if Background.isValid(background,tank["x"]-3,tank["y"]):
+                Tank.moveLeft(tank)
         elif c=='d' :
-            Tank.moveRight(tank)
+            if Background.isValid(background,tank["x"]+12,tank["y"]):
+                Tank.moveRight(tank)
         elif c=='k' :
-            Tank.moveLeft(tank2)
+            if Background.isValid(background,tank2["x"]-3,tank2["y"]):
+                Tank.moveLeft(tank2)
         elif c=='m' :
-            Tank.moveRight(tank2)
+            if Background.isValid(background,tank2["x"]+12,tank2["y"]):
+                Tank.moveRight(tank2)
 
 def isData():
 	#recuperation evenement clavier
