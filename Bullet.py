@@ -17,6 +17,42 @@ def createBullet(posX,posY,dmg):
     B["dmg"]=dmg
     return B
 
+def getX(b):
+    return b['x']
+def setX(b,x):
+    b['x']=x
+    
+def getY(b):
+    return b['y']
+def setY(b,y):
+    b['y']=y
+    
+def getColor(b):
+    return b['color']
+def setColor(b,c):
+    b['color']=c
+    
+def getT(b):
+    return b['t']
+def setT(b,t):
+    b['t']=t
+    
+def getP(b):
+    return b['p']
+def setP(b,p):
+    b['p']=p
+    
+def getH(b):
+    return b['h']
+def setH(b,h):
+    b['h']=h
+    
+def getDmg(b):
+    return b['dmg']
+def setDmg(b,d):
+    b['dmg']=d
+    
+
 def show(a) : 
     
     #on se place a la position de l ball dans le terminal

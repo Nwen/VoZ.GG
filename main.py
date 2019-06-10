@@ -12,16 +12,16 @@ import Background
 import Tank
 import Bullet
 import Menu
+import Fin
 #interaction clavier
 old_settings = termios.tcgetattr(sys.stdin)
 
 #donnee du jeu
-obstacles=[]
 background = None
 timeStep=None
 
 def init():
-    global tank, background, timeStep, obstacles, tank2, menu
+    global tank, background, timeStep, tank2, menu, Fin1, Fin2
     
     #initialisation de la partie
 
@@ -33,6 +33,9 @@ def init():
     tank2=Tank.createTank(196,46,"tank2.txt",False)
     background = Background.create("bg.txt")
     menu = Menu.createMenu("menu.txt")
+    Fin1= Fin.createFin("Win_1.txt")
+    Fin2= Fin.createFin("Win_2.txt")
+
 
     # interaction clavier
     tty.setcbreak(sys.stdin.fileno())
@@ -44,30 +47,31 @@ def interact():
     #si une touche est appuyee
     if isData():
         c = sys.stdin.read(1)
-        if menu["on"]==False:
+        if Menu.getOn(menu)==False and Tank.getPV(tank) > 0 and Tank.getPV(tank2) > 0:
             if c == '\x1b':         # x1b is ESC
                 quitGame()
             
-            if tank["isPlaying"]==True and tank["PV"]>0 and tank2["isShooting"]==False: #condition tank 1
+            if Tank.getIsPlaying(tank)==True and Tank.getPV(tank)>0 and Tank.getIsShooting(tank2)==False: #condition tank 1
                 if c=='q' :
-                    if Background.isValid(background,tank["x"]-3,tank["y"]):
-                        if Background.isClimbable(background,tank["x"]-2,tank["y"]+2):
+                    if Background.isValid(background,Tank.getX(tank)-3,Tank.getY(tank)):
+                        if Background.isClimbable(background,Tank.getX(tank)-2,Tank.getY(tank)+2):
                             Tank.moveUpLeft(tank)
-                        elif Background.canFall(background,tank["x"]-1,tank["y"]+3):
+                        elif Background.canFall(background,Tank.getX(tank)-1,Tank.getY(tank)+3):
                             Tank.moveDownLeft(tank)
                         else :
                             Tank.moveLeft(tank)   
                 elif c=='d' :
-                    if Background.isValid(background,tank["x"]+12,tank["y"]):
-                        if Background.isClimbable(background,tank["x"]+9,tank["y"]+2):
+                    if Background.isValid(background,Tank.getX(tank)+12,Tank.getY(tank)):
+                        if Background.isClimbable(background,Tank.getX(tank)+9,Tank.getY(tank)+2):
                             Tank.moveUpRight(tank)
-                        elif Background.canFall(background,tank["x"]-1,tank["y"]+3):
+                        elif Background.canFall(background,Tank.getX(tank)-1,Tank.getY(tank)+3):
                             Tank.moveDownRight(tank)
                         else :
                             Tank.moveRight(tank)
                 elif c=='x' : 
-                    Balle=Bullet.createBullet(tank["x"]+13,tank["y"]+1,5)
-                    tank["isShooting"]=True
+                    Balle=Bullet.createBullet(Tank.getX(tank)+13,Tank.getY(tank)+1,26)
+                    #tank["isShooting"]=True
+                    Tank.setIsShooting(tank,True)
                 elif c=='z' :
                     Tank.PowerUp(tank)
                 elif c=='s' :
@@ -77,26 +81,27 @@ def interact():
                 elif c=='e' :
                     Tank.AngleUp(tank)
             
-            if tank2["isPlaying"]==True and tank2["PV"]>0 and tank["isShooting"]==False: #condition tank 2
+            if Tank.getIsPlaying(tank2)==True and Tank.getPV(tank2)>0 and Tank.getIsShooting(tank)==False: #condition tank 2
                 if c=='m' :
-                    if Background.isValid(background,tank2["x"]+12,tank2["y"]):
-                        if Background.isClimbable(background,tank2["x"]+9,tank2["y"]+2):
+                    if Background.isValid(background,Tank.getX(tank2)+12,Tank.getY(tank2)):
+                        if Background.isClimbable(background,Tank.getX(tank2)+9,Tank.getY(tank2)+2):
                             Tank.moveUpRight(tank2)
-                        elif Background.canFall(background,tank2["x"]-1,tank2["y"]+3):
+                        elif Background.canFall(background,Tank.getX(tank2)-1,Tank.getY(tank2)+3):
                             Tank.moveDownRight(tank2)
                         else :
                             Tank.moveRight(tank2)
                 elif c=='k' :
-                    if Background.isValid(background,tank2["x"]-3,tank2["y"]):
-                        if Background.isClimbable(background,tank2["x"]-2,tank2["y"]+2):
+                    if Background.isValid(background,Tank.getX(tank2)-3,Tank.getY(tank2)):
+                        if Background.isClimbable(background,Tank.getX(tank2)-2,Tank.getY(tank2)+2):
                             Tank.moveUpLeft(tank2)
-                        elif Background.canFall(background,tank2["x"]-1,tank2["y"]+3):
+                        elif Background.canFall(background,Tank.getX(tank2)-1,Tank.getY(tank2)+3):
                             Tank.moveDownLeft(tank2)
                         else :
                             Tank.moveLeft(tank2)
                 elif c=='u' :
-                    Balle=Bullet.createBullet(tank2["x"]-1,tank2["y"]+1,5)
-                    tank2["isShooting"]=True
+                    Balle=Bullet.createBullet(Tank.getX(tank2)-1,Tank.getY(tank2)+1,26)
+                    #tank2["isShooting"]=True
+                    Tank.setIsShooting(tank2,True)
                 elif c=='o' :
                     Tank.PowerUp(tank2)
                 elif c=='l' :
@@ -107,12 +112,24 @@ def interact():
                     Tank.AngleUp(tank2)
             
         
-        else : #Action dans le menu
+        elif Menu.getOn(menu)==True: #Action dans le menu
             if c == '\x1b':         # x1b is ESC
                 quitGame() 
         
-            elif c== 'n':
+            elif c== '\n':
                 Menu.MenuOff(menu)
+        
+        elif Fin.getOn(Fin1)==True:
+            if c== '\x1b':
+                quitGame()
+            elif c== 'r':
+                init()
+        
+        elif Fin.getOn(Fin2)==True:
+            if c== '\x1b':
+                quitGame()
+            elif c== 'r':
+                init()
 
 def isData():
     #recuperation evenement clavier
@@ -127,29 +144,37 @@ def PrintVar(y,x,var):
     sys.stdout.write("\033[37m")
 
 def show():
-    global background, tank,obstacles, tank2, menu
+    global background, tank, tank2, menu, Fin1, Fin2
     
     #effacer la console
     sys.stdout.write("\033[1;1H")
     sys.stdout.write("\033[2J")
     
     #Menu ou non
-    if menu["on"]==False :
+    if menu["on"]==False and Tank.getPV(tank2)>0 and Tank.getPV(tank2)>0:
     #affichage des differents elements
         Background.show(background)
-        PrintVar(21,2,tank["v"])
-        PrintVar(17,3,tank["angle"])
-        PrintVar(12,6,tank["PV"])
-        PrintVar(186,6,tank2["PV"])
-        PrintVar(194,2,tank2["v"])
-        PrintVar(190,3,tank2["angle"])
-        showBalle()
+        PrintVar(21,2,Tank.getV(tank))
+        PrintVar(17,3,Tank.getAngle(tank))
+        PrintVar(12,6,Tank.getPV(tank))
+        PrintVar(186,6,Tank.getPV(tank2))
+        PrintVar(194,2,Tank.getV(tank2))
+        PrintVar(190,3,Tank.getAngle(tank2))
+        updateBalle()
         Tank.show(tank2)
         Tank.show(tank)
     
     #Affichage du menu
-    else :
+    elif menu["on"]==True:
         Menu.show(menu)
+    
+    elif Tank.getPV(tank2)<=0:
+        Fin.setOn(Fin1,True)
+        Fin.show(Fin1)
+    
+    elif Tank.getPV(tank)<=0:
+        Fin.setOn(Fin2,True)
+        Fin.show(Fin2)
     
     #restoration couleur 
     sys.stdout.write("\033[37m")
@@ -158,21 +183,25 @@ def show():
     #deplacement curseur
     sys.stdout.write("\033[0;0H\n")
 
-def showBalle():
+def updateBalle():
     global Balle
     
-    if tank["isShooting"]==True:
+    if Tank.getIsShooting(tank)==True:
         Bullet.show(Balle)
         Bullet.shoot(Balle,tank,1)
         Bullet.collide(background,Balle,tank,tank2)
-        tank["isPlaying"]=False
-        tank2["isPlaying"]=True
-    if tank2["isShooting"]==True:
+        #tank["isPlaying"]=False
+        Tank.setIsPlaying(tank,False)
+        #tank2["isPlaying"]=True
+        Tank.setIsPlaying(tank2,True)
+    if Tank.getIsShooting(tank2)==True:
         Bullet.show(Balle)
         Bullet.shoot(Balle,tank2,-1)
         Bullet.collide(background,Balle,tank2,tank)
-        tank2["isPlaying"]=False
-        tank["isPlaying"]=True
+        #tank2["isPlaying"]=False
+        Tank.setIsPlaying(tank2,False)
+        #tank["isPlaying"]=True
+        Tank.setIsPlaying(tank,True)
         
 def run():
     global timeStep
@@ -195,11 +224,7 @@ def quitGame():
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, old_settings)
     sys.exit()
 
-######################################
-
-
-init()
-#try:
-run()
-#finally:
-quitGame()
+if __name__=="__main__":
+    init()
+    run()
+    quitGame()

@@ -13,6 +13,16 @@ def create(filename):
     bg["grid"]=bg['str'].splitlines()
     return bg
 
+def getStr(b):
+    return b['str']
+def setStr(b,st):
+    b['str']=st
+    
+def getGrid(b):
+    return b['grid']
+def setV(b,grid):
+    b['grid']=grid
+
 def isValid(bg,x,y):
 	if y>len(bg['grid'])-1:
 		return False
@@ -34,7 +44,6 @@ def canFall(bg,x,y):
     for i in range(10):
         if bg['grid'][y][x+i]!=' ' and bg['grid'][y][x+i]=='█':
             k+=1
-        #i+=1
     if k != 0:
         return False
     else :
@@ -43,19 +52,7 @@ def canFall(bg,x,y):
     
 def show(bg) : 
 
-    
-    #goto
     sys.stdout.write("\033[1;1H")
-        
-    #couleur fond
     sys.stdout.write("\033[40m")
-    
-    #couleur white
     sys.stdout.write("\033[37m")
-    
-    #affiche
     sys.stdout.write(bg["str"])
-
-
-
-    
