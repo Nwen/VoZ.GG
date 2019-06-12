@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 import sys
 import os
-import random
-import Background
 
 #le module Tank gere le type abstrait de donnee Tank
 
@@ -25,22 +23,48 @@ def createTank(posx,posy,filename,isPlaying):
     return t
 
 
-def getX(m):
-    return m['x']
-def setX(m,x):
-    m['x']=x
+def getX(t):
+    return t['x']
+def setX(t,x):
+    t['x']=x
 
-def getY(m):
-    return m['y']
-def setY(m,y):
-    m['y']=y
+def getY(t):
+    return t['y']
+def setY(t,y):
+    t['y']=y
 
-def getColor(m):
-    return m['color']
-def setColor(m,c):
-    m['color']=c
+def getColor(t):
+    return t['color']
+def setColor(t,c):
+    t['color']=c
+    
+def getPV(t):
+    return t['PV']
+def setPV(t,pv):
+    t['PV']=pv
+    
+def getV(t):
+    return t['v']
+def setV(t,v):
+    t['v']=v
+    
+def getIsShooting(t):
+    return t["isShooting"]
+def setIsShooting(t,isShooting):
+    t['isShooting']=isShooting
+    
+def getIsPlaying(t):
+    return t["isPlaying"]
+def setIsPlaying(t,isPlaying):
+    t['isPlaying']=isPlaying
+    
+def getAngle(t):
+    return t['angle']
+def setAngle(t,angle):
+    t['angle']=angle
     
 def show(t) : 
+    #affichage tank
     for l in range(0,t["hauteur"]):
         x=str(int(t["x"])-1)
         y=str(int(t["y"])+l)
@@ -79,6 +103,7 @@ def moveDownRight(t):
 def moveDownLeft(t):
     t["x"]-=2
     t["y"]+=1
+    
 def changeColor(a):
     a["color"]=a["color"]+1
 
