@@ -28,5 +28,5 @@ Tirer : U
 
 Crédits :
 
-Projet réalise par Gwendal LE MOUEL et Gwendal PATON dans le cadre de l'IPI à l'ENIB
+Projet réalisé par Gwendal LE MOUEL et Gwendal PATON dans le cadre de l'IPI à l'ENIB
 VoZ.GG - 2019
