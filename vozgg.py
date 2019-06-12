@@ -71,7 +71,7 @@ def interact():
                         else :
                             Tank.moveRight(tank) # avancer à droite
                 elif c=='x' : 
-                    Balle=Bullet.createBullet(Tank.getX(tank)+13,Tank.getY(tank)+1,26)
+                    Balle=Bullet.createBullet(Tank.getX(tank)+13,Tank.getY(tank)+1,5)
                     Tank.setIsShooting(tank,True)
                 elif c=='z' : #augmenter la puissance de tir
                     Tank.PowerUp(tank)
@@ -100,7 +100,7 @@ def interact():
                         else :
                             Tank.moveLeft(tank2) # avancer à droite
                 elif c=='u' :
-                    Balle=Bullet.createBullet(Tank.getX(tank2)-1,Tank.getY(tank2)+1,26)
+                    Balle=Bullet.createBullet(Tank.getX(tank2)-1,Tank.getY(tank2)+1,5)
                     Tank.setIsShooting(tank2,True)
                 elif c=='o' : #augmenter la puissance de tir
                     Tank.PowerUp(tank2)
@@ -131,8 +131,8 @@ def interact():
                 
             elif c== 'h': #choix map 2
                 background = Background.create("bg1.txt")
-                Tank.setY(tank,13)
-                Tank.setY(tank2,13)
+                Tank.setY(tank,18)
+                Tank.setY(tank2,18)
             
             elif c== '\n': #enlever le choix de la carte de la couleur
                 ChooseMap.ChoixOff(choixmap)
