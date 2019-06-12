@@ -176,7 +176,7 @@ def show():
     sys.stdout.write("\033[2J")
     
     #Menu ou non
-    if Menu.getOn(menu)==False and Tank.getPV(tank2)>0 and Tank.getPV(tank2)>0 and ChooseMap.getOn(choixmap)==False:
+    if Menu.getOn(menu)==False and Tank.getPV(tank2)>0 and Tank.getPV(tank)>0 and ChooseMap.getOn(choixmap)==False:
     #affichage des differents elements
         Background.show(background)
         PrintVar(21,2,Tank.getV(tank))
